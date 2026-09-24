@@ -1,0 +1,137 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Seasons In Garden",
+        "description": "Enter the Access Key and Secret Key from the CSV you saved when issuing the Open API key in the app.",
+        "data": {
+          "device_name": "Device name",
+          "access_key": "Access Key",
+          "secret_key": "Secret Key"
+        },
+        "data_description": {
+          "device_name": "Sent as device_name with every request."
+        },
+        "sections": {
+          "advanced": {
+            "name": "Advanced",
+            "data": {
+              "host": "Server host"
+            },
+            "data_description": {
+              "host": "Change only when testing against another server."
+            }
+          }
+        }
+      },
+      "sensors": {
+        "title": "Choose sensors",
+        "description": "Only sensors whose unit can be sent are listed. Select up to {max_sensors} sensors.",
+        "data": {
+          "entities": "Sensors",
+          "interval": "Upload interval"
+        },
+        "data_description": {
+          "interval": "The service stores one value per sensor every 3 minutes."
+        }
+      },
+      "map_sensor": {
+        "title": "Sensor {position}: {name}",
+        "description": "{entity_id} (current value: {state})\n\nThe field name identifies this sensor in the app. Changing it later registers a new sensor.",
+        "data": {
+          "category": "Measurement",
+          "field_nm": "Field name"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Update the API key",
+        "description": "Seasons In Garden rejected the API key for {name}. Enter a valid key pair.",
+        "data": {
+          "access_key": "Access Key",
+          "secret_key": "Secret Key"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "The Access Key or Secret Key is not valid.",
+      "cannot_connect": "Could not connect to the server.",
+      "unknown": "Unexpected error.",
+      "no_sensors": "Select at least one sensor.",
+      "too_many_sensors": "Select at most 10 sensors.",
+      "invalid_field_name": "Use 1-50 letters, digits, '_' or '-'.",
+      "duplicate_field_name": "Another selected sensor already uses this field name."
+    },
+    "abort": {
+      "already_configured": "This Access Key is already configured.",
+      "reauth_successful": "The API key was updated.",
+      "no_eligible_sensors": "No sensor in Home Assistant has a unit that can be sent."
+    }
+  },
+  "options": {
+    "step": {
+      "sensors": {
+        "title": "Choose sensors",
+        "description": "Only sensors whose unit can be sent are listed. Select up to {max_sensors} sensors.",
+        "data": {
+          "entities": "Sensors",
+          "interval": "Upload interval"
+        },
+        "data_description": {
+          "interval": "The service stores one value per sensor every 3 minutes."
+        }
+      },
+      "map_sensor": {
+        "title": "Sensor {position}: {name}",
+        "description": "{entity_id} (current value: {state})\n\nThe field name identifies this sensor in the app. Changing it later registers a new sensor.",
+        "data": {
+          "category": "Measurement",
+          "field_nm": "Field name"
+        }
+      }
+    },
+    "error": {
+      "no_sensors": "Select at least one sensor.",
+      "too_many_sensors": "Select at most 10 sensors.",
+      "invalid_field_name": "Use 1-50 letters, digits, '_' or '-'.",
+      "duplicate_field_name": "Another selected sensor already uses this field name."
+    },
+    "abort": {
+      "no_eligible_sensors": "No sensor in Home Assistant has a unit that can be sent."
+    }
+  },
+  "selector": {
+    "category": {
+      "options": {
+        "01": "Temperature (°C)",
+        "02": "Humidity (%)",
+        "07": "Soil moisture (%)",
+        "09": "Light, PPFD (μmol/m²/s)",
+        "10": "Water temperature (°C)",
+        "12": "Carbon dioxide (ppm)",
+        "13": "Soil temperature (°C)",
+        "14": "VPD (kPa)",
+        "15": "EC (dS/m)"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "last_success": {
+        "name": "Last successful upload"
+      },
+      "last_result": {
+        "name": "Last upload result",
+        "state": {
+          "success": "Success",
+          "no_data": "No data to send",
+          "auth_failed": "Authentication failed",
+          "rejected": "Rejected",
+          "error": "Error"
+        }
+      },
+      "last_sent_count": {
+        "name": "Sensors sent"
+      }
+    }
+  }
+}

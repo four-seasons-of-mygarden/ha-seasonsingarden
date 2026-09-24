@@ -1,0 +1,13 @@
+{
+  "domain": "seasonsingarden",
+  "name": "Seasons In Garden",
+  "codeowners": ["@pecman-jin"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/four-seasons-of-mygarden/ha-seasonsingarden",
+  "integration_type": "service",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/four-seasons-of-mygarden/ha-seasonsingarden/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}
