@@ -35,12 +35,80 @@
           "interval": "The service stores one value per sensor every 3 minutes."
         }
       },
-      "map_sensor": {
-        "title": "Sensor {position}: {name}",
-        "description": "{entity_id} (current value: {state})\n\nThe field name identifies this sensor in the app. Changing it later registers a new sensor.",
-        "data": {
-          "category": "Measurement",
-          "field_nm": "Field name"
+      "map_sensors": {
+        "title": "Name the sensors",
+        "description": "Choose the measurement and field name of each sensor. The field name identifies the sensor in the app; changing it later registers a new sensor.",
+        "sections": {
+          "sensor_1": {
+            "name": "{sensor_1}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_2": {
+            "name": "{sensor_2}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_3": {
+            "name": "{sensor_3}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_4": {
+            "name": "{sensor_4}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_5": {
+            "name": "{sensor_5}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_6": {
+            "name": "{sensor_6}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_7": {
+            "name": "{sensor_7}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_8": {
+            "name": "{sensor_8}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_9": {
+            "name": "{sensor_9}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_10": {
+            "name": "{sensor_10}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          }
         }
       },
       "reauth_confirm": {
@@ -58,8 +126,8 @@
       "unknown": "Unexpected error.",
       "no_sensors": "Select at least one sensor.",
       "too_many_sensors": "Select at most 10 sensors.",
-      "invalid_field_name": "Use 1-50 letters, digits, '_' or '-'.",
-      "duplicate_field_name": "Another selected sensor already uses this field name."
+      "invalid_field_name": "{error_sensor}: use 1-50 letters, digits, '_' or '-' for the field name.",
+      "duplicate_field_name": "{error_sensor}: another sensor already uses this field name."
     },
     "abort": {
       "already_configured": "This Access Key is already configured.",
@@ -80,20 +148,88 @@
           "interval": "The service stores one value per sensor every 3 minutes."
         }
       },
-      "map_sensor": {
-        "title": "Sensor {position}: {name}",
-        "description": "{entity_id} (current value: {state})\n\nThe field name identifies this sensor in the app. Changing it later registers a new sensor.",
-        "data": {
-          "category": "Measurement",
-          "field_nm": "Field name"
+      "map_sensors": {
+        "title": "Name the sensors",
+        "description": "Choose the measurement and field name of each sensor. The field name identifies the sensor in the app; changing it later registers a new sensor.",
+        "sections": {
+          "sensor_1": {
+            "name": "{sensor_1}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_2": {
+            "name": "{sensor_2}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_3": {
+            "name": "{sensor_3}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_4": {
+            "name": "{sensor_4}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_5": {
+            "name": "{sensor_5}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_6": {
+            "name": "{sensor_6}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_7": {
+            "name": "{sensor_7}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_8": {
+            "name": "{sensor_8}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_9": {
+            "name": "{sensor_9}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          },
+          "sensor_10": {
+            "name": "{sensor_10}",
+            "data": {
+              "category": "Measurement",
+              "field_nm": "Field name"
+            }
+          }
         }
       }
     },
     "error": {
       "no_sensors": "Select at least one sensor.",
       "too_many_sensors": "Select at most 10 sensors.",
-      "invalid_field_name": "Use 1-50 letters, digits, '_' or '-'.",
-      "duplicate_field_name": "Another selected sensor already uses this field name."
+      "invalid_field_name": "{error_sensor}: use 1-50 letters, digits, '_' or '-' for the field name.",
+      "duplicate_field_name": "{error_sensor}: another sensor already uses this field name."
     },
     "abort": {
       "no_eligible_sensors": "No sensor in Home Assistant has a unit that can be sent."

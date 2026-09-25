@@ -110,8 +110,8 @@ class _SensorSelectionFlow:
     """Steps shared by the config and options flows to pick sensors.
 
     The `sensors` step selects up to MAX_SENSORS entities and the upload
-    interval; `map_sensor` then runs once per entity to choose its category
-    and field name.
+    interval; `map_sensors` then sets the category and field name of all of
+    them on one form.
     """
 
     hass: HomeAssistant
@@ -121,7 +121,6 @@ class _SensorSelectionFlow:
     _interval: int = DEFAULT_INTERVAL_MINUTES
     _existing: dict[str, dict[str, str]]
     _selected: list[str]
-    _mapped: list[dict[str, str]]
 
     def _init_selection(self, options: Mapping[str, Any]) -> None:
         self._interval = options.get(CONF_INTERVAL, DEFAULT_INTERVAL_MINUTES)
@@ -129,7 +128,6 @@ class _SensorSelectionFlow:
             sensor[CONF_ENTITY_ID]: sensor for sensor in options.get(CONF_SENSORS, [])
         }
         self._selected = []
-        self._mapped = []
 
     async def _async_finish_selection(
         self, interval: int, sensors: list[dict[str, str]]
@@ -150,8 +148,7 @@ class _SensorSelectionFlow:
             else:
                 self._interval = int(user_input[CONF_INTERVAL])
                 self._selected = selected
-                self._mapped = []
-                return await self.async_step_map_sensor()
+                return await self.async_step_map_sensors()
 
         eligible = _eligible_entities(self.hass)
         # Keep previously chosen sensors selectable even if they are
@@ -184,76 +181,106 @@ class _SensorSelectionFlow:
             description_placeholders={"max_sensors": str(MAX_SENSORS)},
         )
 
-    async def async_step_map_sensor(
+    async def async_step_map_sensors(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
-        """Choose the category and field name for the next selected sensor."""
-        entity_id = self._selected[len(self._mapped)]
+        """Choose the category and field name of every selected sensor."""
         errors: dict[str, str] = {}
+        error_sensor = ""
 
         if user_input is not None:
-            field_name = user_input[CONF_FIELD_NAME].strip()
-            if not FIELD_NAME_PATTERN.match(field_name):
-                errors[CONF_FIELD_NAME] = "invalid_field_name"
-            elif any(m[CONF_FIELD_NAME] == field_name for m in self._mapped):
-                errors[CONF_FIELD_NAME] = "duplicate_field_name"
-            else:
-                self._mapped.append(
+            mapped: list[dict[str, str]] = []
+            for key, entity_id in self._section_keys():
+                field_name = user_input[key][CONF_FIELD_NAME].strip()
+                error = None
+                if not FIELD_NAME_PATTERN.match(field_name):
+                    error = "invalid_field_name"
+                elif any(m[CONF_FIELD_NAME] == field_name for m in mapped):
+                    error = "duplicate_field_name"
+                if error:
+                    # Fields inside sections cannot show their own errors, so
+                    # the form-level error names the sensor instead.
+                    errors["base"] = error
+                    error_sensor = self._sensor_name(entity_id)
+                    break
+                mapped.append(
                     {
                         CONF_ENTITY_ID: entity_id,
-                        CONF_CATEGORY: user_input[CONF_CATEGORY],
+                        CONF_CATEGORY: user_input[key][CONF_CATEGORY],
                         CONF_FIELD_NAME: field_name,
                     }
                 )
-                if len(self._mapped) < len(self._selected):
-                    return await self.async_step_map_sensor()
-                return await self._async_finish_selection(self._interval, self._mapped)
+            else:
+                return await self._async_finish_selection(self._interval, mapped)
 
+        fields: dict[vol.Marker, Any] = {}
+        placeholders = {"error_sensor": error_sensor}
+        for key, entity_id in self._section_keys():
+            candidates, category, field_name = self._sensor_defaults(entity_id)
+            if user_input is not None:
+                category = user_input[key][CONF_CATEGORY]
+                field_name = user_input[key][CONF_FIELD_NAME]
+            fields[vol.Required(key)] = section(
+                vol.Schema(
+                    {
+                        vol.Required(CONF_CATEGORY, default=category): SelectSelector(
+                            SelectSelectorConfig(
+                                options=candidates,
+                                mode=SelectSelectorMode.DROPDOWN,
+                                translation_key="category",
+                            )
+                        ),
+                        vol.Required(
+                            CONF_FIELD_NAME, default=field_name
+                        ): TextSelector(),
+                    }
+                ),
+                {"collapsed": False},
+            )
+            placeholders[key] = self._sensor_title(entity_id)
+
+        return self.async_show_form(
+            step_id="map_sensors",
+            data_schema=vol.Schema(fields),
+            errors=errors,
+            description_placeholders=placeholders,
+        )
+
+    def _section_keys(self) -> list[tuple[str, str]]:
+        # Section keys are fixed (sensor_1..sensor_N) so their titles can be
+        # translated; the sensor name is filled in through a placeholder.
+        return [(f"sensor_{i}", e) for i, e in enumerate(self._selected, start=1)]
+
+    def _sensor_name(self, entity_id: str) -> str:
         state = self.hass.states.get(entity_id)
-        unit = state.attributes.get(ATTR_UNIT_OF_MEASUREMENT) if state else None
+        return state.name if state else entity_id
+
+    def _sensor_title(self, entity_id: str) -> str:
+        state = self.hass.states.get(entity_id)
+        if state is None:
+            return entity_id
+        unit = state.attributes.get(ATTR_UNIT_OF_MEASUREMENT) or ""
+        return f"{state.name} ({f'{state.state} {unit}'.strip()})"
+
+    def _sensor_defaults(self, entity_id: str) -> tuple[list[str], str, str]:
+        """Return category choices, default category and default field name."""
+        state = self.hass.states.get(entity_id)
         candidates = (
-            candidate_categories(state.attributes.get(ATTR_DEVICE_CLASS), unit)
+            candidate_categories(
+                state.attributes.get(ATTR_DEVICE_CLASS),
+                state.attributes.get(ATTR_UNIT_OF_MEASUREMENT),
+            )
             if state
             else []
         )
         existing = self._existing.get(entity_id, {})
         if not candidates:
             candidates = [existing[CONF_CATEGORY]] if existing else list(CATEGORIES)
-
-        category_default = existing.get(CONF_CATEGORY)
-        if category_default not in candidates:
-            category_default = candidates[0]
-        if user_input is not None:
-            category_default = user_input[CONF_CATEGORY]
-            field_default = user_input[CONF_FIELD_NAME]
-        else:
-            field_default = existing.get(
-                CONF_FIELD_NAME, _default_field_name(entity_id)
-            )
-
-        schema = vol.Schema(
-            {
-                vol.Required(CONF_CATEGORY, default=category_default): SelectSelector(
-                    SelectSelectorConfig(
-                        options=candidates,
-                        mode=SelectSelectorMode.DROPDOWN,
-                        translation_key="category",
-                    )
-                ),
-                vol.Required(CONF_FIELD_NAME, default=field_default): TextSelector(),
-            }
-        )
-        return self.async_show_form(
-            step_id="map_sensor",
-            data_schema=schema,
-            errors=errors,
-            description_placeholders={
-                "name": state.name if state else entity_id,
-                "entity_id": entity_id,
-                "state": f"{state.state} {unit or ''}".strip() if state else "-",
-                "position": f"{len(self._mapped) + 1}/{len(self._selected)}",
-            },
-        )
+        category = existing.get(CONF_CATEGORY)
+        if category not in candidates:
+            category = candidates[0]
+        field_name = existing.get(CONF_FIELD_NAME, _default_field_name(entity_id))
+        return candidates, category, field_name
 
 
 class SeasonsInGardenConfigFlow(_SensorSelectionFlow, ConfigFlow, domain=DOMAIN):

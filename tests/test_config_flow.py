@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from typing import Any
 from unittest.mock import AsyncMock
 
 from homeassistant.config_entries import SOURCE_USER
@@ -28,6 +29,13 @@ USER_INPUT = {
     CONF_SECRET_KEY: SECRET_KEY,
     "advanced": {CONF_HOST: DEFAULT_HOST},
 }
+
+
+def _section(result: dict[str, Any], key: str) -> tuple[dict[str, Any], Any]:
+    """Return the defaults and schema of a sensor section in a form."""
+    schema = result["data_schema"].schema[key].schema.schema
+    defaults = {str(marker): marker.default() for marker in schema}
+    return defaults, schema
 
 
 async def test_user_flow(
@@ -57,21 +65,24 @@ async def test_user_flow(
         result["flow_id"],
         {"entities": ["sensor.pot_moisture", "sensor.grow_light_ppfd"], "interval": 10},
     )
-    assert result["step_id"] == "map_sensor"
-    assert result["description_placeholders"]["position"] == "1/2"
-    schema = result["data_schema"].schema
-    category_key = next(k for k in schema if k == "category")
-    assert category_key.default() == "07"
+    assert result["step_id"] == "map_sensors"
+    assert list(result["data_schema"].schema) == ["sensor_1", "sensor_2"]
+    placeholders = result["description_placeholders"]
+    assert placeholders["sensor_1"] == "pot moisture (41 %)"
+    assert placeholders["sensor_2"] == "grow light ppfd (350 µmol/m²/s)"
+
+    defaults, schema = _section(result, "sensor_1")
+    assert defaults == {"category": "07", "field_nm": "pot_moisture"}
     assert schema["category"].config["options"] == ["07", "02"]
+    defaults, _ = _section(result, "sensor_2")
+    assert defaults == {"category": "09", "field_nm": "grow_light_ppfd"}
 
     result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], {"category": "07", "field_nm": "soil_moisture"}
-    )
-    assert result["step_id"] == "map_sensor"
-    assert result["description_placeholders"]["position"] == "2/2"
-
-    result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], {"category": "09", "field_nm": "ppfd"}
+        result["flow_id"],
+        {
+            "sensor_1": {"category": "07", "field_nm": "soil_moisture"},
+            "sensor_2": {"category": "09", "field_nm": "ppfd"},
+        },
     )
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert result["title"] == DEVICE_NAME
@@ -210,17 +221,27 @@ async def test_field_name_validation(
         },
     )
     result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], {"category": "01", "field_nm": "거실 온도"}
+        result["flow_id"],
+        {
+            "sensor_1": {"category": "01", "field_nm": "temp"},
+            "sensor_2": {"category": "07", "field_nm": "거실 온도"},
+        },
     )
-    assert result["errors"] == {"field_nm": "invalid_field_name"}
+    assert result["errors"] == {"base": "invalid_field_name"}
+    assert result["description_placeholders"]["error_sensor"] == "pot moisture"
+    # The form keeps what the user typed.
+    defaults, _ = _section(result, "sensor_2")
+    assert defaults == {"category": "07", "field_nm": "거실 온도"}
 
     result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], {"category": "01", "field_nm": "temp"}
+        result["flow_id"],
+        {
+            "sensor_1": {"category": "01", "field_nm": "temp"},
+            "sensor_2": {"category": "07", "field_nm": "temp"},
+        },
     )
-    result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], {"category": "07", "field_nm": "temp"}
-    )
-    assert result["errors"] == {"field_nm": "duplicate_field_name"}
+    assert result["errors"] == {"base": "duplicate_field_name"}
+    assert result["description_placeholders"]["error_sensor"] == "pot moisture"
 
 
 async def test_options_flow(hass: HomeAssistant, config_entry: MockConfigEntry) -> None:
@@ -242,11 +263,11 @@ async def test_options_flow(hass: HomeAssistant, config_entry: MockConfigEntry) 
         result["flow_id"],
         {"entities": ["sensor.living_temperature"], "interval": 15},
     )
-    field_key = next(k for k in result["data_schema"].schema if k == "field_nm")
-    assert field_key.default() == "temp"
+    defaults, _ = _section(result, "sensor_1")
+    assert defaults == {"category": "01", "field_nm": "temp"}
 
     result = await hass.config_entries.options.async_configure(
-        result["flow_id"], {"category": "13", "field_nm": "soil_temp"}
+        result["flow_id"], {"sensor_1": {"category": "13", "field_nm": "soil_temp"}}
     )
     assert result["type"] is FlowResultType.CREATE_ENTRY
     await hass.async_block_till_done()
