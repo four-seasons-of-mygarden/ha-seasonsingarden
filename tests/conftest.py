@@ -108,6 +108,9 @@ def set_sensor_states(hass: HomeAssistant) -> None:
         {"device_class": "illuminance", "unit_of_measurement": "lx"},
     )
     hass.states.async_set(
+        "sensor.purifier_filter_remaining", "86", {"unit_of_measurement": "%"}
+    )
+    hass.states.async_set(
         "sensor.phone_battery",
         "80",
         {"device_class": "battery", "unit_of_measurement": "%"},

@@ -19,7 +19,7 @@ from custom_components.seasonsingarden.categories import (
         (None, "°C", ["01", "10", "13"]),
         ("humidity", "%", ["02", "07"]),
         ("moisture", "%", ["07", "02"]),
-        (None, "%", ["02", "07"]),
+        (None, "%", []),
         ("battery", "%", []),
         ("carbon_dioxide", "ppm", ["12"]),
         (None, "µmol/m²/s", ["09"]),

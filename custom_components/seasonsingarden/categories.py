@@ -88,6 +88,9 @@ class Category:
     preferred_device_class: str | None
     # Classes accepted in addition to sensors without a device class.
     device_classes: frozenset[str]
+    # Whether sensors without a device class are rejected because the unit
+    # alone is too generic (percent is also used for batteries, filters...).
+    requires_device_class: bool
     # Normalized unit -> spelling passed to the converter.
     units: MappingProxyType[str, str]
     converter: Converter
@@ -96,7 +99,9 @@ class Category:
         """Return whether a sensor with this class and unit can be sent."""
         if normalize_unit(unit) not in self.units:
             return False
-        return device_class is None or device_class in self.device_classes
+        if device_class is None:
+            return not self.requires_device_class
+        return device_class in self.device_classes
 
 
 def _category(
@@ -105,6 +110,8 @@ def _category(
     device_classes: Iterable[SensorDeviceClass],
     units: Iterable[str],
     converter: Converter = _identity,
+    *,
+    requires_device_class: bool = False,
 ) -> Category:
     device_classes = [str(dc) for dc in device_classes]
     return Category(
@@ -112,6 +119,7 @@ def _category(
         unit=unit,
         preferred_device_class=device_classes[0] if device_classes else None,
         device_classes=frozenset(device_classes),
+        requires_device_class=requires_device_class,
         units=MappingProxyType({normalize_unit(u): str(u) for u in units}),
         converter=converter,
     )
@@ -127,8 +135,8 @@ CATEGORIES: dict[str, Category] = {
     c.code: c
     for c in (
         _category("01", "°C", _TEMPERATURE, UnitOfTemperature, _to_celsius),
-        _category("02", "%", _HUMIDITY, ("%",)),
-        _category("07", "%", _MOISTURE, ("%",)),
+        _category("02", "%", _HUMIDITY, ("%",), requires_device_class=True),
+        _category("07", "%", _MOISTURE, ("%",), requires_device_class=True),
         _category("09", PPFD_UNIT, (), _PPFD_SPELLINGS),
         _category("10", "°C", _TEMPERATURE, UnitOfTemperature, _to_celsius),
         _category("12", "ppm", (SensorDeviceClass.CO2,), ("ppm",)),
