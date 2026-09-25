@@ -1,4 +1,4 @@
-"""Constants for the Seasons In Garden integration."""
+"""Constants for the SeasonsInGarden integration."""
 
 from __future__ import annotations
 

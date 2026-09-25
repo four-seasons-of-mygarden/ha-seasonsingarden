@@ -83,7 +83,7 @@ class UploadStatusSensor(SensorEntity):
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry.entry_id)},
             name=entry.data[CONF_DEVICE_NAME],
-            manufacturer="Seasons In Garden",
+            manufacturer="SeasonsInGarden",
             entry_type=DeviceEntryType.SERVICE,
         )
 

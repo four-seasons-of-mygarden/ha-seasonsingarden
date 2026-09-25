@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Connect to Seasons In Garden",
+        "title": "Connect to SeasonsInGarden",
         "description": "Enter the Access Key and Secret Key from the CSV you saved when issuing the Open API key in the app.",
         "data": {
           "device_name": "Device name",
@@ -113,7 +113,7 @@
       },
       "reauth_confirm": {
         "title": "Update the API key",
-        "description": "Seasons In Garden rejected the API key for {name}. Enter a valid key pair.",
+        "description": "SeasonsInGarden rejected the API key for {name}. Enter a valid key pair.",
         "data": {
           "access_key": "Access Key",
           "secret_key": "Secret Key"

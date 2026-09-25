@@ -1,4 +1,4 @@
-"""Client for the Seasons In Garden sensor Open API.
+"""Client for the SeasonsInGarden sensor Open API.
 
 This module does not depend on Home Assistant so the signing and payload
 format can be tested on their own.

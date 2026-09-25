@@ -1,4 +1,4 @@
-"""Diagnostics support for Seasons In Garden."""
+"""Diagnostics support for SeasonsInGarden."""
 
 from __future__ import annotations
 

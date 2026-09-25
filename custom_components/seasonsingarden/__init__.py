@@ -1,4 +1,4 @@
-"""Send Home Assistant sensor data to Seasons In Garden."""
+"""Send Home Assistant sensor data to SeasonsInGarden."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ type SeasonsInGardenConfigEntry = ConfigEntry[SensorUploader]
 async def async_setup_entry(
     hass: HomeAssistant, entry: SeasonsInGardenConfigEntry
 ) -> bool:
-    """Set up Seasons In Garden from a config entry."""
+    """Set up SeasonsInGarden from a config entry."""
     client = SeasonsInGardenClient(
         async_get_clientsession(hass),
         entry.data.get(CONF_HOST, DEFAULT_HOST),

@@ -1,6 +1,6 @@
 # 내정원의 사계절 Home Assistant 통합
 
-Home Assistant에 있는 센서 값을 **내정원의 사계절(Seasons In Garden)** Open API로
+Home Assistant에 있는 센서 값을 **내정원의 사계절(SeasonsInGarden)** Open API로
 전송하는 커스텀 통합입니다. 이미 Home Assistant에 연결된 온도·습도·토양습도·CO₂
 센서 등을 별도 보드 없이 앱의 구역·식물에 연결할 수 있습니다.
 
@@ -20,7 +20,7 @@ Home Assistant에 있는 센서 값을 **내정원의 사계절(Seasons In Garde
 1. HACS → 오른쪽 위 메뉴 → **Custom repositories**
 2. 저장소 `https://github.com/four-seasons-of-mygarden/ha-seasonsingarden`,
    유형 **Integration**을 추가합니다.
-3. **Seasons In Garden**을 설치하고 Home Assistant를 재시작합니다.
+3. **SeasonsInGarden**을 설치하고 Home Assistant를 재시작합니다.
 
 ### 수동 설치
 
@@ -46,7 +46,7 @@ MY → 설정 → 센서 관리 → 설치할 장소 선택 → 오른쪽 위 + 
 
 ## 설정
 
-**설정 → 기기 및 서비스 → 통합 구성요소 추가 → Seasons In Garden**을 선택합니다.
+**설정 → 기기 및 서비스 → 통합 구성요소 추가 → SeasonsInGarden**을 선택합니다.
 
 1. **기기 이름, Access Key, Secret Key**를 입력합니다. 입력한 키로 서버에
    요청을 보내 인증을 확인합니다.

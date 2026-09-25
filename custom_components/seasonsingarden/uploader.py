@@ -129,7 +129,7 @@ class SensorUploader:
             # which reloads the entry and creates a new uploader.
             self._auth_failed = True
             self._set_result(UploadResult.AUTH_FAILED, str(err), 0)
-            _LOGGER.error("Seasons In Garden rejected the API key: %s", err)
+            _LOGGER.error("SeasonsInGarden rejected the API key: %s", err)
             self._entry.async_start_reauth(self._hass)
             return
         except SeasonsInGardenError as err:

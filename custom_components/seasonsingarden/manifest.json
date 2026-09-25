@@ -1,6 +1,6 @@
 {
   "domain": "seasonsingarden",
-  "name": "Seasons In Garden",
+  "name": "SeasonsInGarden",
   "codeowners": ["@pecman-jin"],
   "config_flow": true,
   "dependencies": [],

@@ -1,4 +1,4 @@
-"""Fixtures for Seasons In Garden tests."""
+"""Fixtures for SeasonsInGarden tests."""
 
 from __future__ import annotations
 

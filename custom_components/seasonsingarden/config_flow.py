@@ -1,4 +1,4 @@
-"""Config and options flows for Seasons In Garden."""
+"""Config and options flows for SeasonsInGarden."""
 
 from __future__ import annotations
 
@@ -284,7 +284,7 @@ class _SensorSelectionFlow:
 
 
 class SeasonsInGardenConfigFlow(_SensorSelectionFlow, ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Seasons In Garden."""
+    """Handle a config flow for SeasonsInGarden."""
 
     VERSION = 1
 

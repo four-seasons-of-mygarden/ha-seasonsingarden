@@ -1,4 +1,4 @@
-"""Mapping between Home Assistant sensors and Seasons In Garden categories.
+"""Mapping between Home Assistant sensors and SeasonsInGarden categories.
 
 The service accepts a fixed set of measurement categories, each with one
 unit. A Home Assistant sensor can be sent when its unit can be converted to
