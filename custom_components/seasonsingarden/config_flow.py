@@ -54,6 +54,7 @@ from .const import (
     MAX_SENSORS,
     MIN_INTERVAL_MINUTES,
 )
+from .uploader import configured_interval
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -123,7 +124,7 @@ class _SensorSelectionFlow:
     _selected: list[str]
 
     def _init_selection(self, options: Mapping[str, Any]) -> None:
-        self._interval = options.get(CONF_INTERVAL, DEFAULT_INTERVAL_MINUTES)
+        self._interval = configured_interval(options)
         self._existing = {
             sensor[CONF_ENTITY_ID]: sensor for sensor in options.get(CONF_SENSORS, [])
         }

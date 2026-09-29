@@ -21,10 +21,10 @@ CONF_ENTITY_ID: Final = "entity_id"
 CONF_FIELD_NAME: Final = "field_nm"
 CONF_CATEGORY: Final = "category"
 
-# The service stores one value per sensor every 3 minutes, so shorter
-# intervals only add requests that are accepted but not recorded.
+# The service records one request per API key every 5 minutes; requests sent
+# sooner are accepted but not recorded.
 DEFAULT_INTERVAL_MINUTES: Final = 5
-MIN_INTERVAL_MINUTES: Final = 3
+MIN_INTERVAL_MINUTES: Final = 5
 MAX_INTERVAL_MINUTES: Final = 60
 
 MAX_SENSORS: Final = 10

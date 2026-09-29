@@ -151,3 +151,30 @@ async def test_diagnostics_redacts_keys(
     assert ACCESS_KEY not in text
     assert SECRET_KEY not in text
     assert diagnostics["upload"]["pending_readings"][0]["field_nm"] == "temp"
+
+
+async def test_old_short_interval_is_raised(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    aioclient_mock: AiohttpClientMocker,
+    freezer: FrozenDateTimeFactory,
+) -> None:
+    """Entries saved with a 3-minute interval upload every 5 minutes."""
+    set_sensor_states(hass)
+    aioclient_mock.post(URL, text="ok")
+    config_entry.add_to_hass(hass)
+    hass.config_entries.async_update_entry(
+        config_entry, options={**config_entry.options, "interval": 3}
+    )
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+
+    freezer.tick(timedelta(minutes=3))
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done()
+    assert aioclient_mock.call_count == 0
+
+    freezer.tick(timedelta(minutes=2))
+    async_fire_time_changed(hass)
+    await hass.async_block_till_done()
+    assert aioclient_mock.call_count == 1

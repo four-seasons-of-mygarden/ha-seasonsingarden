@@ -253,6 +253,9 @@ async def test_options_flow(hass: HomeAssistant, config_entry: MockConfigEntry) 
 
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
     assert result["step_id"] == "sensors"
+    interval_key = next(k for k in result["data_schema"].schema if k == "interval")
+    assert interval_key.default() == 5
+    assert result["data_schema"].schema["interval"].config["min"] == 5
     entities_key = next(k for k in result["data_schema"].schema if k == "entities")
     assert entities_key.default() == [
         "sensor.living_temperature",

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from datetime import datetime, timedelta
 from enum import StrEnum
 import logging
@@ -35,9 +35,22 @@ from .const import (
     CONF_INTERVAL,
     CONF_SENSORS,
     DEFAULT_INTERVAL_MINUTES,
+    MIN_INTERVAL_MINUTES,
 )
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def configured_interval(options: Mapping[str, Any]) -> int:
+    """Return the upload interval in minutes, raised to the service minimum.
+
+    Entries created while the minimum was lower keep working without being
+    reconfigured.
+    """
+    return max(
+        int(options.get(CONF_INTERVAL, DEFAULT_INTERVAL_MINUTES)),
+        MIN_INTERVAL_MINUTES,
+    )
 
 
 class UploadResult(StrEnum):
@@ -65,9 +78,7 @@ class SensorUploader:
         self._client = client
         self._device_name: str = entry.data[CONF_DEVICE_NAME]
         self._sensors: list[dict[str, str]] = entry.options.get(CONF_SENSORS, [])
-        self._interval = timedelta(
-            minutes=entry.options.get(CONF_INTERVAL, DEFAULT_INTERVAL_MINUTES)
-        )
+        self._interval = timedelta(minutes=configured_interval(entry.options))
         self._lock = asyncio.Lock()
         self._listeners: list[CALLBACK_TYPE] = []
         self._auth_failed = False
@@ -87,8 +98,8 @@ class SensorUploader:
     @callback
     def async_start(self) -> CALLBACK_TYPE:
         """Start the interval timer and return a function that stops it."""
-        # The first upload waits one interval so restarts do not send extra
-        # values inside the service's 3-minute storage window.
+        # The first upload waits one interval so a restart does not send a
+        # request inside the key's 5-minute window, where it would be dropped.
         return async_track_time_interval(
             self._hass,
             self._async_interval_elapsed,

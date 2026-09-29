@@ -32,7 +32,7 @@
           "interval": "전송 주기"
         },
         "data_description": {
-          "interval": "서비스는 센서마다 3분 간격으로 값을 저장합니다."
+          "interval": "5분보다 짧은 주기로 보내면 서버에서 받지 않습니다."
         }
       },
       "map_sensors": {
@@ -145,7 +145,7 @@
           "interval": "전송 주기"
         },
         "data_description": {
-          "interval": "서비스는 센서마다 3분 간격으로 값을 저장합니다."
+          "interval": "5분보다 짧은 주기로 보내면 서버에서 받지 않습니다."
         }
       },
       "map_sensors": {

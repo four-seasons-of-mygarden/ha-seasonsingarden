@@ -17,6 +17,12 @@ Home Assistant에 있는 센서 값을 **내정원의 사계절(SeasonsInGarden)
 
 ### HACS
 
+HACS가 설치된 Home Assistant에서 아래 버튼을 누르면 이 저장소가 바로 열립니다.
+
+[![HACS에서 열기](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=four-seasons-of-mygarden&repository=ha-seasonsingarden&category=integration)
+
+버튼을 쓸 수 없으면 직접 추가합니다.
+
 1. HACS → 오른쪽 위 메뉴 → **Custom repositories**
 2. 저장소 `https://github.com/four-seasons-of-mygarden/ha-seasonsingarden`,
    유형 **Integration**을 추가합니다.
@@ -47,6 +53,9 @@ MY → 설정 → 센서 관리 → 설치할 장소 선택 → 오른쪽 위 + 
 ## 설정
 
 **설정 → 기기 및 서비스 → 통합 구성요소 추가 → SeasonsInGarden**을 선택합니다.
+설치 후 재시작했다면 아래 버튼으로 바로 시작할 수도 있습니다.
+
+[![통합 구성요소 추가](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=seasonsingarden)
 
 1. **기기 이름, Access Key, Secret Key**를 입력합니다. 입력한 키로 서버에
    요청을 보내 인증을 확인합니다.
@@ -89,10 +98,10 @@ Home Assistant 센서의 `device_class`와 단위(`unit_of_measurement`)를 보�
 
 ## 전송 방식
 
-- 설정한 주기(기본 5분, 3~60분)마다 선택한 센서의 **그 시점 현재 값**을
+- 설정한 주기(기본 5분, 5~60분)마다 선택한 센서의 **그 시점 현재 값**을
   하나의 요청으로 보냅니다. Home Assistant를 재시작하면 한 주기 뒤에 첫
   전송을 합니다.
-- 서비스는 같은 센서의 값을 3분 간격으로 저장하므로 주기는 3분 이상입니다.
+- 5분보다 짧은 주기로 보내면 서버에서 받지 않습니다.
 - `unavailable`, `unknown`이거나 숫자가 아닌 값, 측정 항목과 맞지 않는 단위의
   값은 건너뜁니다.
 - 전송에 실패하면 다음 주기에 다시 보냅니다. 실패한 값을 쌓아 두었다가 다시

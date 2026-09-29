@@ -32,7 +32,7 @@
           "interval": "Upload interval"
         },
         "data_description": {
-          "interval": "The service stores one value per sensor every 3 minutes."
+          "interval": "The server does not accept data sent more often than every 5 minutes."
         }
       },
       "map_sensors": {
@@ -145,7 +145,7 @@
           "interval": "Upload interval"
         },
         "data_description": {
-          "interval": "The service stores one value per sensor every 3 minutes."
+          "interval": "The server does not accept data sent more often than every 5 minutes."
         }
       },
       "map_sensors": {
