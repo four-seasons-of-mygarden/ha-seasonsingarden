@@ -178,3 +178,36 @@ async def test_old_short_interval_is_raised(
     async_fire_time_changed(hass)
     await hass.async_block_till_done()
     assert aioclient_mock.call_count == 1
+
+
+async def test_lux_sent_as_ppfd(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    aioclient_mock: AiohttpClientMocker,
+    freezer: FrozenDateTimeFactory,
+) -> None:
+    """A lux sensor is multiplied by its light profile's factor."""
+    set_sensor_states(hass)
+    aioclient_mock.post(URL, text="ok")
+    config_entry.add_to_hass(hass)
+    hass.config_entries.async_update_entry(
+        config_entry,
+        options={
+            "interval": 5,
+            "sensors": [
+                {
+                    "entity_id": "sensor.living_illuminance",
+                    "category": "09",
+                    "field_nm": "ppfd",
+                    "light_profile": "natural",
+                }
+            ],
+        },
+    )
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+
+    await _tick(hass, freezer)
+    assert aioclient_mock.mock_calls[0][2]["sensors"] == [
+        {"field_nm": "ppfd", "category": "09", "data": "222"}
+    ]

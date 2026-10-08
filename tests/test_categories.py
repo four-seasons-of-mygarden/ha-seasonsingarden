@@ -8,6 +8,7 @@ from custom_components.seasonsingarden.categories import (
     candidate_categories,
     convert_state,
     format_value,
+    ppfd_per_lux,
 )
 
 
@@ -26,7 +27,8 @@ from custom_components.seasonsingarden.categories import (
         (None, "μmol/m²/s", ["09"]),
         (None, "umol/m2/s", ["09"]),
         (None, "µmol/s⋅m²", ["09"]),
-        ("illuminance", "lx", []),
+        ("illuminance", "lx", ["09"]),
+        (None, "lux", ["09"]),
         ("pressure", "kPa", ["14"]),
         (None, "hPa", ["14"]),
         ("conductivity", "µS/cm", ["15"]),
@@ -84,3 +86,28 @@ def test_convert_state_rejects(category: str, state: str, unit: str) -> None:
 def test_format_value(value: float, expected: str) -> None:
     """Values are sent without insignificant zeros."""
     assert format_value(value) == expected
+
+
+@pytest.mark.parametrize(
+    ("profile", "custom", "expected"),
+    [
+        ("natural", None, 0.0185),
+        ("hps", None, 0.0122),
+        ("custom", 0.02, 0.02),
+        ("custom", None, None),
+        (None, None, None),
+    ],
+)
+def test_ppfd_per_lux(
+    profile: str | None, custom: float | None, expected: float | None
+) -> None:
+    """Light profiles map to the firmware's PPFD/lux factors."""
+    assert ppfd_per_lux(profile, custom) == expected
+
+
+def test_convert_lux_to_ppfd() -> None:
+    """lux is converted with the factor and skipped without one."""
+    assert convert_state("09", "10000", "lx", 0.0185) == pytest.approx(185.0)
+    assert convert_state("09", "10000", "lx") is None
+    # A PPFD sensor ignores the factor.
+    assert convert_state("09", "350", "µmol/m²/s", 0.0185) == 350.0

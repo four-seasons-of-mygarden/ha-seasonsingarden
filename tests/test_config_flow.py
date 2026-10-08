@@ -10,6 +10,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+import voluptuous as vol
 
 from custom_components.seasonsingarden.api import CannotConnect, InvalidAuth
 from custom_components.seasonsingarden.const import (
@@ -34,7 +35,11 @@ USER_INPUT = {
 def _section(result: dict[str, Any], key: str) -> tuple[dict[str, Any], Any]:
     """Return the defaults and schema of a sensor section in a form."""
     schema = result["data_schema"].schema[key].schema.schema
-    defaults = {str(marker): marker.default() for marker in schema}
+    defaults = {
+        str(marker): marker.default()
+        for marker in schema
+        if marker.default is not vol.UNDEFINED
+    }
     return defaults, schema
 
 
@@ -57,6 +62,7 @@ async def test_user_flow(
     assert include == [
         "sensor.grow_light_ppfd",
         "sensor.living_humidity",
+        "sensor.living_illuminance",
         "sensor.living_temperature",
         "sensor.pot_moisture",
     ]
@@ -242,6 +248,73 @@ async def test_field_name_validation(
     )
     assert result["errors"] == {"base": "duplicate_field_name"}
     assert result["description_placeholders"]["error_sensor"] == "pot moisture"
+
+
+async def test_lux_sensor_light_profile(
+    hass: HomeAssistant, mock_validate: AsyncMock, mock_setup_entry: AsyncMock
+) -> None:
+    """lux sensors choose a light profile or enter a custom factor."""
+    set_sensor_states(hass)
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": SOURCE_USER}
+    )
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], USER_INPUT
+    )
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"],
+        {
+            "entities": ["sensor.living_illuminance", "sensor.living_temperature"],
+            "interval": 5,
+        },
+    )
+    defaults, schema = _section(result, "sensor_1")
+    assert defaults["category"] == "09"
+    assert defaults["light_profile"] == "natural"
+    assert schema["light_profile"].config["options"][-1] == "custom"
+    # Only lux sensors get the light profile fields.
+    defaults, _ = _section(result, "sensor_2")
+    assert "light_profile" not in defaults
+
+    temperature = {"category": "01", "field_nm": "temp"}
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"],
+        {
+            "sensor_1": {
+                "category": "09",
+                "field_nm": "ppfd",
+                "light_profile": "custom",
+            },
+            "sensor_2": temperature,
+        },
+    )
+    assert result["errors"] == {"base": "missing_ppfd_factor"}
+    assert result["description_placeholders"]["error_sensor"] == "living illuminance"
+
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"],
+        {
+            "sensor_1": {
+                "category": "09",
+                "field_nm": "ppfd",
+                "light_profile": "custom",
+                "ppfd_factor": 0.0201,
+            },
+            "sensor_2": temperature,
+        },
+    )
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert result["options"]["sensors"][0] == {
+        "entity_id": "sensor.living_illuminance",
+        "category": "09",
+        "field_nm": "ppfd",
+        "light_profile": "custom",
+        "ppfd_factor": 0.0201,
+    }
+    assert result["options"]["sensors"][1] == {
+        "entity_id": "sensor.living_temperature",
+        **temperature,
+    }
 
 
 async def test_options_flow(hass: HomeAssistant, config_entry: MockConfigEntry) -> None:

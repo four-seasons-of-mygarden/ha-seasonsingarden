@@ -35,7 +35,15 @@ from homeassistant.helpers.selector import (
 import voluptuous as vol
 
 from .api import CannotConnect, InvalidAuth, SeasonsInGardenClient
-from .categories import CATEGORIES, candidate_categories
+from .categories import (
+    CATEGORIES,
+    LIGHT_PROFILE_CUSTOM,
+    LIGHT_PROFILES,
+    MAX_PPFD_FACTOR,
+    MIN_PPFD_FACTOR,
+    candidate_categories,
+    is_lux_unit,
+)
 from .const import (
     CONF_ACCESS_KEY,
     CONF_CATEGORY,
@@ -44,6 +52,8 @@ from .const import (
     CONF_FIELD_NAME,
     CONF_HOST,
     CONF_INTERVAL,
+    CONF_LIGHT_PROFILE,
+    CONF_PPFD_FACTOR,
     CONF_SECRET_KEY,
     CONF_SENSORS,
     DEFAULT_HOST,
@@ -64,6 +74,23 @@ CONF_ADVANCED = "advanced"
 FIELD_NAME_PATTERN = re.compile(rf"^[A-Za-z0-9_-]{{1,{FIELD_NAME_MAX_LENGTH}}}$")
 
 _PASSWORD = TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
+
+DEFAULT_LIGHT_PROFILE = "natural"
+_LIGHT_PROFILE_SELECTOR = SelectSelector(
+    SelectSelectorConfig(
+        options=[*LIGHT_PROFILES, LIGHT_PROFILE_CUSTOM],
+        mode=SelectSelectorMode.DROPDOWN,
+        translation_key="light_profile",
+    )
+)
+_PPFD_FACTOR_SELECTOR = NumberSelector(
+    NumberSelectorConfig(
+        min=MIN_PPFD_FACTOR,
+        max=MAX_PPFD_FACTOR,
+        step="any",
+        mode=NumberSelectorMode.BOX,
+    )
+)
 
 
 async def _async_validate(
@@ -190,27 +217,35 @@ class _SensorSelectionFlow:
         error_sensor = ""
 
         if user_input is not None:
-            mapped: list[dict[str, str]] = []
+            mapped: list[dict[str, Any]] = []
             for key, entity_id in self._section_keys():
-                field_name = user_input[key][CONF_FIELD_NAME].strip()
+                values = user_input[key]
+                field_name = values[CONF_FIELD_NAME].strip()
+                profile = values.get(CONF_LIGHT_PROFILE)
+                factor = values.get(CONF_PPFD_FACTOR)
                 error = None
                 if not FIELD_NAME_PATTERN.match(field_name):
                     error = "invalid_field_name"
                 elif any(m[CONF_FIELD_NAME] == field_name for m in mapped):
                     error = "duplicate_field_name"
+                elif profile == LIGHT_PROFILE_CUSTOM and factor is None:
+                    error = "missing_ppfd_factor"
                 if error:
                     # Fields inside sections cannot show their own errors, so
                     # the form-level error names the sensor instead.
                     errors["base"] = error
                     error_sensor = self._sensor_name(entity_id)
                     break
-                mapped.append(
-                    {
-                        CONF_ENTITY_ID: entity_id,
-                        CONF_CATEGORY: user_input[key][CONF_CATEGORY],
-                        CONF_FIELD_NAME: field_name,
-                    }
-                )
+                sensor: dict[str, Any] = {
+                    CONF_ENTITY_ID: entity_id,
+                    CONF_CATEGORY: values[CONF_CATEGORY],
+                    CONF_FIELD_NAME: field_name,
+                }
+                if profile is not None:
+                    sensor[CONF_LIGHT_PROFILE] = profile
+                    if profile == LIGHT_PROFILE_CUSTOM:
+                        sensor[CONF_PPFD_FACTOR] = float(factor)
+                mapped.append(sensor)
             else:
                 return await self._async_finish_selection(self._interval, mapped)
 
@@ -218,25 +253,35 @@ class _SensorSelectionFlow:
         placeholders = {"error_sensor": error_sensor}
         for key, entity_id in self._section_keys():
             candidates, category, field_name = self._sensor_defaults(entity_id)
+            existing = self._existing.get(entity_id, {})
+            profile = existing.get(CONF_LIGHT_PROFILE, DEFAULT_LIGHT_PROFILE)
+            factor = existing.get(CONF_PPFD_FACTOR)
             if user_input is not None:
                 category = user_input[key][CONF_CATEGORY]
                 field_name = user_input[key][CONF_FIELD_NAME]
-            fields[vol.Required(key)] = section(
-                vol.Schema(
-                    {
-                        vol.Required(CONF_CATEGORY, default=category): SelectSelector(
-                            SelectSelectorConfig(
-                                options=candidates,
-                                mode=SelectSelectorMode.DROPDOWN,
-                                translation_key="category",
-                            )
-                        ),
-                        vol.Required(
-                            CONF_FIELD_NAME, default=field_name
-                        ): TextSelector(),
-                    }
+                profile = user_input[key].get(CONF_LIGHT_PROFILE, profile)
+                factor = user_input[key].get(CONF_PPFD_FACTOR)
+            schema: dict[vol.Marker, Any] = {
+                vol.Required(CONF_CATEGORY, default=category): SelectSelector(
+                    SelectSelectorConfig(
+                        options=candidates,
+                        mode=SelectSelectorMode.DROPDOWN,
+                        translation_key="category",
+                    )
                 ),
-                {"collapsed": False},
+                vol.Required(CONF_FIELD_NAME, default=field_name): TextSelector(),
+            }
+            if self._is_lux_sensor(entity_id):
+                schema[vol.Required(CONF_LIGHT_PROFILE, default=profile)] = (
+                    _LIGHT_PROFILE_SELECTOR
+                )
+                schema[
+                    vol.Optional(
+                        CONF_PPFD_FACTOR, description={"suggested_value": factor}
+                    )
+                ] = _PPFD_FACTOR_SELECTOR
+            fields[vol.Required(key)] = section(
+                vol.Schema(schema), {"collapsed": False}
             )
             placeholders[key] = self._sensor_title(entity_id)
 
@@ -251,6 +296,13 @@ class _SensorSelectionFlow:
         # Section keys are fixed (sensor_1..sensor_N) so their titles can be
         # translated; the sensor name is filled in through a placeholder.
         return [(f"sensor_{i}", e) for i, e in enumerate(self._selected, start=1)]
+
+    def _is_lux_sensor(self, entity_id: str) -> bool:
+        """Return whether the sensor reports lux and needs a light profile."""
+        state = self.hass.states.get(entity_id)
+        if state is None:
+            return CONF_LIGHT_PROFILE in self._existing.get(entity_id, {})
+        return is_lux_unit(state.attributes.get(ATTR_UNIT_OF_MEASUREMENT))
 
     def _sensor_name(self, entity_id: str) -> str:
         state = self.hass.states.get(entity_id)

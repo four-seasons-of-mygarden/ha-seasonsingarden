@@ -43,70 +43,130 @@
             "name": "{sensor_1}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_2": {
             "name": "{sensor_2}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_3": {
             "name": "{sensor_3}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_4": {
             "name": "{sensor_4}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_5": {
             "name": "{sensor_5}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_6": {
             "name": "{sensor_6}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_7": {
             "name": "{sensor_7}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_8": {
             "name": "{sensor_8}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_9": {
             "name": "{sensor_9}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_10": {
             "name": "{sensor_10}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           }
         }
@@ -127,7 +187,8 @@
       "no_sensors": "Select at least one sensor.",
       "too_many_sensors": "Select at most 10 sensors.",
       "invalid_field_name": "{error_sensor}: use 1-50 letters, digits, '_' or '-' for the field name.",
-      "duplicate_field_name": "{error_sensor}: another sensor already uses this field name."
+      "duplicate_field_name": "{error_sensor}: another sensor already uses this field name.",
+      "missing_ppfd_factor": "{error_sensor}: enter a custom factor when Custom calibration is selected."
     },
     "abort": {
       "already_configured": "This Access Key is already configured.",
@@ -156,70 +217,130 @@
             "name": "{sensor_1}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_2": {
             "name": "{sensor_2}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_3": {
             "name": "{sensor_3}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_4": {
             "name": "{sensor_4}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_5": {
             "name": "{sensor_5}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_6": {
             "name": "{sensor_6}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_7": {
             "name": "{sensor_7}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_8": {
             "name": "{sensor_8}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_9": {
             "name": "{sensor_9}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           },
           "sensor_10": {
             "name": "{sensor_10}",
             "data": {
               "category": "Measurement",
-              "field_nm": "Field name"
+              "field_nm": "Field name",
+              "light_profile": "Light source",
+              "ppfd_factor": "Custom factor (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "Used to convert lux to PPFD. For mixed light, measure with a PAR sensor and enter a custom factor.",
+              "ppfd_factor": "Only used with Custom calibration. 0.001-0.100."
             }
           }
         }
@@ -229,7 +350,8 @@
       "no_sensors": "Select at least one sensor.",
       "too_many_sensors": "Select at most 10 sensors.",
       "invalid_field_name": "{error_sensor}: use 1-50 letters, digits, '_' or '-' for the field name.",
-      "duplicate_field_name": "{error_sensor}: another sensor already uses this field name."
+      "duplicate_field_name": "{error_sensor}: another sensor already uses this field name.",
+      "missing_ppfd_factor": "{error_sensor}: enter a custom factor when Custom calibration is selected."
     },
     "abort": {
       "no_eligible_sensors": "No sensor in Home Assistant has a unit that can be sent."
@@ -247,6 +369,16 @@
         "13": "Soil temperature (°C)",
         "14": "VPD (kPa)",
         "15": "EC (dS/m)"
+      }
+    },
+    "light_profile": {
+      "options": {
+        "natural": "Natural light (0.0185)",
+        "white_led_warm": "White LED 2700-4000K (0.0175)",
+        "white_led_cool": "White LED 5000-6500K (0.0145)",
+        "fluorescent_metal_halide": "Fluorescent / metal halide (0.0138)",
+        "hps": "HPS sodium lamp (0.0122)",
+        "custom": "Custom calibration"
       }
     }
   },

@@ -27,6 +27,21 @@ _GREEK_MU = "μ"
 
 PPFD_UNIT = f"{_GREEK_MU}mol/m²/s"
 EC_UNIT = "dS/m"
+LUX_UNIT = "lx"
+_LUX_SPELLINGS = ("lx", "lux", "Lux", "LUX", "LX")
+
+# PPFD per lux for common light sources, the same values as the
+# arduino-r4-wifi-light firmware. Mixed light needs a calibrated custom value.
+LIGHT_PROFILES: dict[str, float] = {
+    "natural": 0.0185,
+    "white_led_warm": 0.0175,
+    "white_led_cool": 0.0145,
+    "fluorescent_metal_halide": 0.0138,
+    "hps": 0.0122,
+}
+LIGHT_PROFILE_CUSTOM = "custom"
+MIN_PPFD_FACTOR = 0.001
+MAX_PPFD_FACTOR = 0.1
 
 # Common spellings of µmol/m²/s. Compared after normalize_unit().
 _PPFD_SPELLINGS = (
@@ -137,7 +152,13 @@ CATEGORIES: dict[str, Category] = {
         _category("01", "°C", _TEMPERATURE, UnitOfTemperature, _to_celsius),
         _category("02", "%", _HUMIDITY, ("%",), requires_device_class=True),
         _category("07", "%", _MOISTURE, ("%",), requires_device_class=True),
-        _category("09", PPFD_UNIT, (), _PPFD_SPELLINGS),
+        # lux needs a light profile to become PPFD; see convert_state().
+        _category(
+            "09",
+            PPFD_UNIT,
+            (SensorDeviceClass.ILLUMINANCE,),
+            (*_PPFD_SPELLINGS, *_LUX_SPELLINGS),
+        ),
         _category("10", "°C", _TEMPERATURE, UnitOfTemperature, _to_celsius),
         _category("12", "ppm", (SensorDeviceClass.CO2,), ("ppm",)),
         _category("13", "°C", _TEMPERATURE, UnitOfTemperature, _to_celsius),
@@ -165,14 +186,33 @@ def candidate_categories(device_class: str | None, unit: str | None) -> list[str
     return [c.code for c in matches]
 
 
-def convert_state(category: str, state: str, unit: str | None) -> float | None:
+def is_lux_unit(unit: str | None) -> bool:
+    """Return whether the unit is illuminance (lux)."""
+    return normalize_unit(unit) in {normalize_unit(u) for u in _LUX_SPELLINGS}
+
+
+def ppfd_per_lux(profile: str | None, custom_factor: float | None) -> float | None:
+    """Return the PPFD/lux factor of a light profile or a custom value."""
+    if profile == LIGHT_PROFILE_CUSTOM:
+        return custom_factor
+    return LIGHT_PROFILES.get(profile or "")
+
+
+def convert_state(
+    category: str,
+    state: str,
+    unit: str | None,
+    ppfd_factor: float | None = None,
+) -> float | None:
     """Convert a sensor state to the category's unit.
 
-    Returns None when the state is not a finite number or the unit no longer
-    fits the category.
+    Returns None when the state is not a finite number, the unit no longer
+    fits the category, or a lux value has no PPFD/lux factor.
     """
     cat = CATEGORIES.get(category)
     if cat is None or (source_unit := cat.units.get(normalize_unit(unit))) is None:
+        return None
+    if is_lux_unit(source_unit) and ppfd_factor is None:
         return None
     try:
         value = float(state)
@@ -180,6 +220,8 @@ def convert_state(category: str, state: str, unit: str | None) -> float | None:
         return None
     if not math.isfinite(value):
         return None
+    if is_lux_unit(source_unit):
+        return value * ppfd_factor
     return cat.converter(value, source_unit)
 
 

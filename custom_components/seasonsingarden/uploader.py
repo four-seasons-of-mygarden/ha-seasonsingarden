@@ -26,13 +26,15 @@ from .api import (
     SeasonsInGardenError,
     SensorReading,
 )
-from .categories import convert_state, format_value
+from .categories import convert_state, format_value, ppfd_per_lux
 from .const import (
     CONF_CATEGORY,
     CONF_DEVICE_NAME,
     CONF_ENTITY_ID,
     CONF_FIELD_NAME,
     CONF_INTERVAL,
+    CONF_LIGHT_PROFILE,
+    CONF_PPFD_FACTOR,
     CONF_SENSORS,
     DEFAULT_INTERVAL_MINUTES,
     MIN_INTERVAL_MINUTES,
@@ -77,7 +79,7 @@ class SensorUploader:
         self._entry = entry
         self._client = client
         self._device_name: str = entry.data[CONF_DEVICE_NAME]
-        self._sensors: list[dict[str, str]] = entry.options.get(CONF_SENSORS, [])
+        self._sensors: list[dict[str, Any]] = entry.options.get(CONF_SENSORS, [])
         self._interval = timedelta(minutes=configured_interval(entry.options))
         self._lock = asyncio.Lock()
         self._listeners: list[CALLBACK_TYPE] = []
@@ -173,7 +175,14 @@ class SensorUploader:
             if state is None or state.state in (STATE_UNKNOWN, STATE_UNAVAILABLE):
                 continue
             unit = state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
-            value = convert_state(sensor[CONF_CATEGORY], state.state, unit)
+            value = convert_state(
+                sensor[CONF_CATEGORY],
+                state.state,
+                unit,
+                ppfd_per_lux(
+                    sensor.get(CONF_LIGHT_PROFILE), sensor.get(CONF_PPFD_FACTOR)
+                ),
+            )
             if value is None:
                 self._warn_once(entity_id, state.state, unit)
                 continue

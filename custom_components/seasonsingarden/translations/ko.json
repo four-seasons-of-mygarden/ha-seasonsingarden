@@ -43,70 +43,130 @@
             "name": "{sensor_1}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_2": {
             "name": "{sensor_2}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_3": {
             "name": "{sensor_3}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_4": {
             "name": "{sensor_4}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_5": {
             "name": "{sensor_5}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_6": {
             "name": "{sensor_6}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_7": {
             "name": "{sensor_7}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_8": {
             "name": "{sensor_8}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_9": {
             "name": "{sensor_9}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_10": {
             "name": "{sensor_10}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           }
         }
@@ -127,7 +187,8 @@
       "no_sensors": "센서를 하나 이상 선택하세요.",
       "too_many_sensors": "센서는 최대 10개까지 선택할 수 있습니다.",
       "invalid_field_name": "{error_sensor}: 필드 이름은 영문, 숫자, '_', '-'로 1~50자를 입력하세요.",
-      "duplicate_field_name": "{error_sensor}: 다른 센서가 이미 이 필드 이름을 사용합니다."
+      "duplicate_field_name": "{error_sensor}: 다른 센서가 이미 이 필드 이름을 사용합니다.",
+      "missing_ppfd_factor": "{error_sensor}: 사용자 보정을 고르면 보정 계수를 입력해야 합니다."
     },
     "abort": {
       "already_configured": "이미 등록된 Access Key입니다.",
@@ -156,70 +217,130 @@
             "name": "{sensor_1}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_2": {
             "name": "{sensor_2}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_3": {
             "name": "{sensor_3}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_4": {
             "name": "{sensor_4}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_5": {
             "name": "{sensor_5}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_6": {
             "name": "{sensor_6}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_7": {
             "name": "{sensor_7}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_8": {
             "name": "{sensor_8}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_9": {
             "name": "{sensor_9}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           },
           "sensor_10": {
             "name": "{sensor_10}",
             "data": {
               "category": "측정 항목",
-              "field_nm": "필드 이름"
+              "field_nm": "필드 이름",
+              "light_profile": "광원",
+              "ppfd_factor": "사용자 보정 계수 (PPFD/lux)"
+            },
+            "data_description": {
+              "light_profile": "lux를 PPFD로 환산할 때 씁니다. 자연광과 식물등이 섞이는 자리라면 PAR 센서로 재서 사용자 보정을 쓰세요.",
+              "ppfd_factor": "사용자 보정을 고른 경우에만 씁니다. 0.001~0.100"
             }
           }
         }
@@ -229,7 +350,8 @@
       "no_sensors": "센서를 하나 이상 선택하세요.",
       "too_many_sensors": "센서는 최대 10개까지 선택할 수 있습니다.",
       "invalid_field_name": "{error_sensor}: 필드 이름은 영문, 숫자, '_', '-'로 1~50자를 입력하세요.",
-      "duplicate_field_name": "{error_sensor}: 다른 센서가 이미 이 필드 이름을 사용합니다."
+      "duplicate_field_name": "{error_sensor}: 다른 센서가 이미 이 필드 이름을 사용합니다.",
+      "missing_ppfd_factor": "{error_sensor}: 사용자 보정을 고르면 보정 계수를 입력해야 합니다."
     },
     "abort": {
       "no_eligible_sensors": "Home Assistant에 전송 가능한 단위의 센서가 없습니다."
@@ -247,6 +369,16 @@
         "13": "토양온도 (°C)",
         "14": "VPD (kPa)",
         "15": "EC (dS/m)"
+      }
+    },
+    "light_profile": {
+      "options": {
+        "natural": "자연광 (0.0185)",
+        "white_led_warm": "백색 LED 2700~4000K (0.0175)",
+        "white_led_cool": "백색 LED 5000~6500K (0.0145)",
+        "fluorescent_metal_halide": "형광등 / 메탈할라이드 (0.0138)",
+        "hps": "HPS 나트륨등 (0.0122)",
+        "custom": "사용자 보정"
       }
     }
   },

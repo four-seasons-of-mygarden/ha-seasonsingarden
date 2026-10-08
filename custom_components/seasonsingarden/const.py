@@ -28,4 +28,8 @@ MIN_INTERVAL_MINUTES: Final = 5
 MAX_INTERVAL_MINUTES: Final = 60
 
 MAX_SENSORS: Final = 10
+
+# lux sensors sent as PPFD: a light profile, or a custom PPFD/lux factor.
+CONF_LIGHT_PROFILE: Final = "light_profile"
+CONF_PPFD_FACTOR: Final = "ppfd_factor"
 FIELD_NAME_MAX_LENGTH: Final = 50
